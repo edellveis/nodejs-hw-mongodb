@@ -4,7 +4,10 @@
   "description": "goit-node-js",
   "type": "module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "nodemon src/index",
+    "start": "node src/index"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "mongoose": "^8.8.4",
     "pino-http": "^10.3.0"
   }
 }
