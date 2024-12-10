@@ -1,8 +1,9 @@
-import {setupServer} from "./sarver.js";
-import { initMongoDB } from "./db/initMongoDB.js";
+import { setupServer } from './server.js';
+import { initMongoDB } from './db/initMongoDB.js';
 const boostrap = async () => {
+  await initMongoDB();
 
-    await initMongoDB();
-    setupServer();
+  setupServer();
 };
+
 boostrap();
