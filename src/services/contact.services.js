@@ -9,7 +9,6 @@ export const addContact = (data) => contactCollection.create(data);
 export const updateContact = async (_id, contact, options = {}) => {
   const { upsert = false } = options;
   const result = await contactCollection.findByIdAndUpdate({ _id }, contact, {
-    new: true,
     upsert,
     includeResultMetadata: true,
   });
