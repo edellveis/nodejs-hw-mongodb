@@ -5,11 +5,14 @@ const parseBoolean = (typeParams) => {
 };
 
 export const filterContactsParams = ({ type, isFavourite }) => {
-  const typeContact = parseBoolean(type);
-  const isFavouriteContact = isFavourite || undefined;
 
+  const isFavouriteBolean = parseBoolean(isFavourite);
+  const typeContact = type;
+
+ console.log(type, 'In Filter');
+ 
   return {
     type: typeContact,
-    isFavourite: isFavouriteContact,
+    isFavourite: isFavouriteBolean,
   };
 };
