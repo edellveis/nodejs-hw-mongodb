@@ -5,7 +5,7 @@ export const isValidId = (req, res, next) => {
   const { id } = req.params;
 
   if (!isValidObjectId(id)) {
-    return next(createError(404, `${id} not valid id`));
+    return next(createError(400, `${id} not valid id`));
   }
   next();
 };

@@ -7,19 +7,12 @@ import { sortByList } from '../db/models/contac.js';
 import { filterContactsParams } from '../utils/filters/filterContactsParams.js';
 
 export const getContactsController = async (req, res) => {
-  
   const { perPage, page } = parsePaginationParams(req.query);
 
-    
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
 
+  const filter = filterContactsParams(req.query);
 
-
-
-
-  const filter =  filterContactsParams(req.query);
-  
-  
   const data = await contactServices.getContacts({
     page,
     perPage,
