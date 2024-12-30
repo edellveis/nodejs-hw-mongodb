@@ -4,7 +4,7 @@ import { calcPaginationData } from '../utils/calcPaginationData.js';
 export const getContacts = async ({
   page = 1,
   perPage = 10,
-  sortBy = '_id',
+  sortBy = 'name',
   sortOrder = 'asc',
   filter = {},
 }) => {
