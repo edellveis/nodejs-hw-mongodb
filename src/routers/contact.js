@@ -8,8 +8,11 @@ import {
 import { validateBody } from '../utils/vadidateBody.js';
 
 import { isValidId } from '../middlewares/isValidid.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactRouter = Router();
+  
+contactRouter.use(authenticate);
 
 contactRouter.get('/', cntrlWapper(contactController.getContactsController));
 contactRouter.get(

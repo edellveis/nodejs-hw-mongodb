@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
+import authRouter from './routers/auth.js';
 import contactRouter from './routers/contact.js';
 
 import { getEnvVar } from './utils/getEnvVar.js';
@@ -12,6 +13,8 @@ export const setupServer = () => {
 
   app.use(cors());
   app.use(express.json());
+
+  app.use('/auth', authRouter);
   app.use('/contacts', contactRouter);
 
   app.use(notFoundHandler);
