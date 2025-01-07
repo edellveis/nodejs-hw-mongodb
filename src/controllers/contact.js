@@ -12,7 +12,6 @@ export const getContactsController = async (req, res) => {
   const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
 
   const filter = filterContactsParams(req.query);
-
   filter.userId = req.user._id;
 
   const data = await contactServices.getContacts({
@@ -82,11 +81,13 @@ export const upsertContactController = async (req, res) => {
   });
 };
 
-export const patchContactController = async (req, res) => {
+export const patchContactController = async (req, res) => {;
   const { id: _id } = req.params;
-  const { id: userId } = req.user;
-  const result = await contactServices.updateContact({ _id, userId }, req.body);
+  const { _id: userId } = req.user;
 
+  
+  const result = await contactServices.updateContact({ _id, userId }, req.body,{upsert: true});
+  
   if (!result) {
     throw createError(404, 'Contact  not found');
   }
@@ -96,6 +97,8 @@ export const patchContactController = async (req, res) => {
     message: 'Successfully patched a contact!',
     data: result.data,
   });
+  
+  
 };
 
 export const deleteContactController = async (req, res) => {
