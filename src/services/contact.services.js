@@ -11,11 +11,8 @@ export const getContacts = async ({
   const limit = perPage;
   const skip = (page - 1) * limit;
 
-  
-
   const contactsQuery = contactCollection.find();
 
-  
   if (filter.type) {
     contactsQuery.where('contactType').equals(filter.type);
   }
@@ -24,12 +21,15 @@ export const getContacts = async ({
     contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
 
+  if (filter.userId) {
+    contactsQuery.where('userId').equals(filter.userId);
+  }
+
   const totalitems = await contactCollection
     .find()
     .merge(contactsQuery)
     .countDocuments();
 
-    
   const data = await contactsQuery
     .skip(skip)
     .limit(limit)
@@ -42,13 +42,13 @@ export const getContacts = async ({
   };
 };
 
-export const getContactsById = (id) => contactCollection.findById(id);
+export const getContact = (id) => contactCollection.findById(id);
 
 export const addContact = (data) => contactCollection.create(data);
 
-export const updateContact = async (_id, contact, options = {}) => {
+export const updateContact = async (filter, contact, options = {}) => {
   const { upsert = false } = options;
-  const result = await contactCollection.findByIdAndUpdate({ _id }, contact, {
+  const result = await contactCollection.findByIdAndUpdate(filter, contact, {
     upsert,
     includeResultMetadata: true,
   });
