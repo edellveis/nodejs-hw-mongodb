@@ -61,7 +61,6 @@ export const refreshSession = async (obejctSesion) => {
     refreshToken: obejctSesion.refreshToken,
     _id: obejctSesion.sessionId,
   });
-  console.log(oldSession);
   if (!oldSession) {
     throw createHttpError(401, 'Invalid session');
   }
