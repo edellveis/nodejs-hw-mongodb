@@ -47,32 +47,16 @@ export const getContact = (filter) => contactCollection.findOne(filter);
 export const addContact = (data) => contactCollection.create(data);
 
 export const updateContact = async (filter, contact, options = {}) => {
-  console.log("filter", filter);
-  //filter {
-  // _id: '677d81e14b03b48f8a3f958f',
-  // userId: new ObjectId('67795d9da3800d22056cadb4')
-  // }
-  console.log("contact", contact);
-// contact {
-//   name: 'Jas',
-//   phoneNumber: '112313123',
-//   email: 'uta@gmail.com',
-//   contactType: 'personal',
-//   isFavourite: true
-// }
-  console.log("Початок функції updateContact");
-  // проходить тест
+
+
   
   const { upsert = false } = options;
-  console.log("upsert", upsert);
-  // upsert ture
 
   const result = await contactCollection.findOneAndUpdate(filter, contact, {
     upsert,
     includeResultMetadata: true,
   });
-  console.log("result", result);//// Цей тест не проходить
-  
+ 
 
   if (!result || !result.value) return null;
   const isNew = Boolean(result.lastErrorObject.upserted);

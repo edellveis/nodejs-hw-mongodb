@@ -6,4 +6,5 @@ export const handleSaveError = (error, doc, next) => {
 export const setUpdateSettings = function (next) {
   this.options.new = true;
   this.options.ruValidators = true;
+  next();
 };
