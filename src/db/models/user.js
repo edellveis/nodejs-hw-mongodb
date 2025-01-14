@@ -16,8 +16,18 @@ email: {
 password: {
     type: String,
     required: true,
-},
-},{versionKey: false, timestamps: true});
+    },
+verify: {
+    type: Boolean,
+    default: false,
+    required: true,
+    },
+}
+    
+    
+    
+    
+    , { versionKey: false, timestamps: true });
 
 
 
