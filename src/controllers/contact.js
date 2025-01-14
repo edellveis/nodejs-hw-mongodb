@@ -11,7 +11,7 @@ import { getEnvVar } from '../utils/getEnvVar.js';
 import { saveFIleCloudnary } from '../utils/saveFileToCloudinary.js';
 
 
-
+import { deleteFIleCloudnary } from '../utils/saveFileToCloudinary.js';
 
 
 export const getContactsController = async (req, res) => {
@@ -78,39 +78,87 @@ export const addContactController = async (req, res) => {
   );
 };
 
+
 export const upsertContactController = async (req, res) => {
   const { id } = req.params;
-
   const { id: userId } = req.user;
 
+  let photo;
+  let oldPhotoUrl = null;
+
+  const oldContact = await contactServices.getContact({ _id: id });
+
+  if (oldContact && oldContact.photo) oldPhotoUrl = oldContact.photo; 
+  
+
+  if (req.file) {
+    const cloudinaryEnable = getEnvVar("CLOUDINARY_ENABLE") === "true";
+    if (cloudinaryEnable) {
+      photo = await saveFIleCloudnary(req.file);
+      if (oldPhotoUrl) {
+        await deleteFIleCloudnary(oldPhotoUrl);
+      }
+    } else {
+      photo = await saveFileToUploadsDir(req.file);
+    }
+  }
+  const updateData = {
+    ...req.body, userId, photo
+  };
+  
   const { isNew, data } = await contactServices.updateContact(
-    id,
-    { ...req.body, userId },
-    {
-      upsert: true,
-    },
+    {_id:id},updateData
+   ,
+    { upsert: true }
   );
 
   const status = isNew ? 201 : 200;
-
-  const statusResopnse = isNew ? 'created' : 'update';
+  const statusResponse = isNew ? 'created' : 'updated';
 
   res.status(status).json({
     status,
-    massege: `Successfully ${statusResopnse} a contact!`,
+    message: `Successfully ${statusResponse} a contact!`,
     data,
   });
 };
 
-export const patchContactController = async (req, res) => {;
+
+export const patchContactController = async (req, res) => {
   const { id: _id } = req.params;
   const { _id: userId } = req.user;
 
+  let photo;
   
-  const result = await contactServices.updateContact({ _id, userId }, req.body,{upsert: true});
+
   
+  const oldContact = await contactServices.getContact({ _id: _id });
+  let oldPhotoUrl = null;
+  if (oldContact && oldContact.photo) {
+    oldPhotoUrl = oldContact.photo;
+  
+  }  
+    
+  if (req.file) {
+    const cloudinaryEnable = getEnvVar("CLOUDINARY_ENABLE") === "true";
+    
+    
+    if (cloudinaryEnable) {
+      photo = await saveFIleCloudnary(req.file);
+
+      
+      if (oldPhotoUrl) {
+        await deleteFIleCloudnary(oldPhotoUrl);
+
+      }
+    } else {
+      photo = await saveFileToUploadsDir(req.file);
+    }
+  }
+
+  const result = await contactServices.updateContact({ _id, userId }, { ...req.body, photo }, { upsert: true });
+
   if (!result) {
-    throw createError(404, 'Contact  not found');
+    throw createError(404, 'Contact not found');
   }
 
   res.json({
@@ -118,18 +166,32 @@ export const patchContactController = async (req, res) => {;
     message: 'Successfully patched a contact!',
     data: result.data,
   });
-  
-  
 };
 
-export const deleteContactController = async (req, res) => {
-  const { id: _id } = req.params;
-  const { id: userId } = req.user;
-  const data = await contactServices.deleteContact({ _id, userId });
 
+export const deleteContactController = async (req, res) => {
+  const { id: _id } = req.params; 
+  const { id: userId } = req.user;
+
+  let oldPhotoUrl = null;
+  
+ 
+  const oldContact = await contactServices.getContact({ _id, userId });
+  
+  if (oldContact && oldContact.photo) {
+    oldPhotoUrl = oldContact.photo; 
+  }
+  
+  const data = await contactServices.deleteContact({ _id, userId });
+  
+  if (oldPhotoUrl) {
+    deleteFIleCloudnary(oldPhotoUrl);
+  }
+  
   if (!data) {
     throw createError(404, 'Contact not found');
   }
 
   res.status(204).send();
 };
+

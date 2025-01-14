@@ -27,3 +27,12 @@ export const saveFIleCloudnary = async file => {
     await unlink(file.path);
    return response.secure_url;
 };
+
+export const deleteFIleCloudnary = async fileUrl => {
+    const fileId = fileUrl.split('/').slice(-2).join('/').split('.')[0];  
+    if (!fileId) return;
+    console.log (fileId);
+    await cloudinary.uploader.destroy(fileId);
+};
+
+
