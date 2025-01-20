@@ -17,6 +17,7 @@ import {
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { TEMPLATES_DIR } from '../constants/index.js';
 import path from 'path';
+import { getUserNameFromGoogle, vidateCode } from '../utils/googleOauth.js';
 
 
 const emailTemplatePath = path.join(TEMPLATES_DIR, 'verify-email.html');
@@ -132,9 +133,40 @@ export const resetPassword = async (token, password) => {
 
 
 };
+   
 
 
+export const loginOrRegisterWithGoogle = async code => {
+  const logintiket = await  vidateCode(code);
+  const payload = logintiket.getPayload();
+  
+  let user = await UserCollection.findOne({ email: payload.email });
 
+  if (!user) { 
+
+   const userName =  await getUserNameFromGoogle(payload);
+   const password = await bcrypt.hash(randomBytes(10).toString('base64'), 10);
+
+    user = await UserCollection.create({
+      email: payload.email,
+      name : userName,
+      password,
+      verify: true,  // Додає в базу даних користувача з вказаними даними та верифікацію)
+    });
+  };
+  
+  
+  
+  
+  const sessionData = createSessionData();
+
+
+  return SesionCollection.create({
+    userId: user._id,
+    ...sessionData,
+  });
+  
+ };
 
 
 export const login = async ({ email, password }) => {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { validateBody } from '../utils/vadidateBody.js';
 
-import { authRegisterSchema, resetEmailSchema, resetPasswordSchema } from '../validation/auth.js';
+import { authRegisterSchema, googleOAuthSchema, resetEmailSchema, resetPasswordSchema } from '../validation/auth.js';
 import { authLoginSchema } from '../validation/auth.js';
 import { cntrlWapper } from '../utils/ctrlWrapper.js';
 
@@ -15,8 +15,14 @@ authRouter.post(
   cntrlWapper(authController.registerController),
 );
 
+
+  
+
 authRouter.get('/verify', cntrlWapper(authController.verifyController));
 
+authRouter.get("/get-oauth-url", cntrlWapper(authController.getGoogleOAuthurlController));
+
+authRouter.post('/confirm-oauth', validateBody(googleOAuthSchema),cntrlWapper(authController.loginWithGoogleController));
 
 authRouter.post('/send-reset-email', validateBody(resetEmailSchema), cntrlWapper(authController.resetEmailController));
 
