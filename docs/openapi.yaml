@@ -11,6 +11,7 @@ tags:
     description: Operations about contacts.
 servers:
   - url: http://localhost:3000
+  - url: https://nodejs-hw-mongodb-92dm.onrender.com/api-docs/#/
 paths:
   /contacts:
     get:
