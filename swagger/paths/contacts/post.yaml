@@ -20,30 +20,26 @@ requestBody:
           - contactType
         properties:
           name:
-            description: "Contact's name"
+            description: 'Lenth of name should be minimum 3 characters max 20'
             type: string
-            example: 'John Doe'
+            example: 'Uta'
           phoneNumber:
-            description: "Contact's phone number"
+            description: "Contact's phone number must be minimum 3 of characters max 20"
             type: string
-            example: '+380123456789'
+            example: '+380'
           email:
-            description: "Contact's email"
+            description: "Contact's email must be valid must be minimum 3 of characters max 20"
             type: string
-            example: 'john.doe@example.com'
+            example: 'uta@example.com'
           isFavourite:
             description: "Contact's identifier. Can be true or false"
             type: boolean
             example: true
           contactType:
-            description: 'Contact`s type. Can be personal or home'
+            description: 'Contact`s type. Can be personal or home must be a valid string'
             type: string
-            enum: ['personal', 'home']
-          photo:
-            description: "Link to contact's photo"
-            type: string
-            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
-            format: binary
+            enum: ['work', 'home', 'personal']
+            example: 'personal'
 responses:
   '201':
     description: Creates a student
