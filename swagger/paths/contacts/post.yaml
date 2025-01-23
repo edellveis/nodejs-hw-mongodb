@@ -1,5 +1,3 @@
-#/swagger/paths/contacts/post.yaml
-
 tags:
   - Contacts
 summary: Create contact
@@ -13,36 +11,48 @@ requestBody:
       schema:
         type: object
         required:
-          - name
+          - _id
           - phoneNumber
           - email
           - isFavourite
           - contactType
         properties:
+          _id:
+            description: 'Contact id'
+            type: string
+            example: 65e4decdd286b30065d54af9
           name:
-            description: 'Lenth of name should be minimum 3 characters max 20'
+            description: 'Contact name'
             type: string
-            example: 'Uta'
+            example: 'John Doe'
           phoneNumber:
-            description: "Contact's phone number must be minimum 3 of characters max 20"
+            description: 'Phone number'
             type: string
-            example: '+380'
-          email:
-            description: "Contact's email must be valid must be minimum 3 of characters max 20"
-            type: string
-            example: 'uta@example.com'
-          isFavourite:
-            description: "Contact's identifier. Can be true or false"
-            type: boolean
-            example: true
+            example: '+1234567890'
           contactType:
-            description: 'Contact`s type. Can be personal or home must be a valid string'
+            description: 'Contact type'
             type: string
-            enum: ['work', 'home', 'personal']
             example: 'personal'
+          email:
+            description: 'Contact email'
+            type: string
+            example: uta@gmail.com
+          isFavourite:
+            description: 'Contact is favourite or not'
+            type: boolean
+            example: false
+          userId:
+            description: 'Contacts parent id'
+            type: string
+            example: 65e4decdd286b30065d54af9
+          photo:
+            description: 'Link to contact photo'
+            type: string
+            format: uri
+            example: https://res.cloudinary.com/uqwgdu/image/upload/image.png
 responses:
   '201':
-    description: Creates a student
+    description: Creates a contact
     content:
       application/json:
         schema:
@@ -57,7 +67,7 @@ responses:
               example: 201
             message:
               type: string
-              example: Successfully created a student!
+              example: Successfully created a contact!
             data:
               type: object
               $ref: '../../components/schemas/contact.yaml'

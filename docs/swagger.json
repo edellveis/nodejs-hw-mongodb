@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": null
+      "url": "https://nodejs-hw-mongodb-92dm.onrender.com/api-docs/#/"
     }
   ],
   "tags": [
@@ -185,46 +185,53 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "name",
+                  "_id",
                   "phoneNumber",
                   "email",
                   "isFavourite",
                   "contactType"
                 ],
                 "properties": {
+                  "_id": {
+                    "description": "Contact id",
+                    "type": "string",
+                    "example": "65e4decdd286b30065d54af9"
+                  },
                   "name": {
-                    "description": "Contact's name",
+                    "description": "Contact name",
                     "type": "string",
                     "example": "John Doe"
                   },
                   "phoneNumber": {
-                    "description": "Contact's phone number",
+                    "description": "Phone number",
                     "type": "string",
-                    "example": "+380123456789"
-                  },
-                  "email": {
-                    "description": "Contact's email",
-                    "type": "string",
-                    "example": "john.doe@example.com"
-                  },
-                  "isFavourite": {
-                    "description": "Contact's identifier. Can be true or false",
-                    "type": "boolean",
-                    "example": true
+                    "example": "+1234567890"
                   },
                   "contactType": {
-                    "description": "Contact`s type. Can be personal or home",
+                    "description": "Contact type",
                     "type": "string",
-                    "enum": [
-                      "personal",
-                      "home"
-                    ]
+                    "example": "personal"
+                  },
+                  "email": {
+                    "description": "Contact email",
+                    "type": "string",
+                    "example": "uta@gmail.com"
+                  },
+                  "isFavourite": {
+                    "description": "Contact is favourite or not",
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "userId": {
+                    "description": "Contacts parent id",
+                    "type": "string",
+                    "example": "65e4decdd286b30065d54af9"
                   },
                   "photo": {
-                    "description": "Link to contact's photo",
+                    "description": "Link to contact photo",
                     "type": "string",
-                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png",
-                    "format": "binary"
+                    "format": "uri",
+                    "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
                   }
                 }
               }
@@ -233,7 +240,7 @@
         },
         "responses": {
           "201": {
-            "description": "Creates a student",
+            "description": "Creates a contact",
             "content": {
               "application/json": {
                 "schema": {
@@ -250,7 +257,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully created a student!"
+                      "example": "Successfully created a contact!"
                     },
                     "data": {
                       "type": "object",
@@ -323,6 +330,9 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -354,13 +364,6 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "phoneNumber",
-                  "email",
-                  "isFavourite",
-                  "contactType"
-                ],
                 "properties": {
                   "name": {
                     "description": "Contact's name",
@@ -402,8 +405,8 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Creates a contact",
+          "200": {
+            "description": "Updates a contact",
             "content": {
               "application/json": {
                 "schema": {
@@ -416,11 +419,11 @@
                   "properties": {
                     "status": {
                       "type": "integer",
-                      "example": 201
+                      "example": 200
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully created a student!"
+                      "example": "Successfully updated a contact!"
                     },
                     "data": {
                       "type": "object",
@@ -460,11 +463,8 @@
           }
         ],
         "responses": {
-          "201": {
+          "204": {
             "description": "The contact was successfully deleted"
-          },
-          "401": {
-            "$ref": "#/components/responses/401"
           }
         }
       }
@@ -564,6 +564,30 @@
                       "example": "Access token expired"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Contact not found for the given id",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Contact not found for the given id"
                 }
               }
             }

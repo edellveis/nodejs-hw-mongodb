@@ -17,5 +17,3 @@ parameters:
 responses:
   '204':
     description: The contact was successfully deleted
-  '401':
-    $ref: '../../../components/responses/401.yaml'
