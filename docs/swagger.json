@@ -192,11 +192,6 @@
                   "contactType"
                 ],
                 "properties": {
-                  "_id": {
-                    "description": "Contact id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
-                  },
                   "name": {
                     "description": "Contact name",
                     "type": "string",
@@ -221,11 +216,6 @@
                     "description": "Contact is favourite or not",
                     "type": "boolean",
                     "example": false
-                  },
-                  "userId": {
-                    "description": "Contacts parent id",
-                    "type": "string",
-                    "example": "65e4decdd286b30065d54af9"
                   },
                   "photo": {
                     "description": "Link to contact photo",
@@ -465,6 +455,12 @@
         "responses": {
           "204": {
             "description": "The contact was successfully deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       }
