@@ -185,10 +185,8 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "_id",
+                  "name",
                   "phoneNumber",
-                  "email",
-                  "isFavourite",
                   "contactType"
                 ],
                 "properties": {
@@ -220,7 +218,7 @@
                   "photo": {
                     "description": "Link to contact photo",
                     "type": "string",
-                    "format": "uri",
+                    "format": "binary",
                     "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
                   }
                 }
